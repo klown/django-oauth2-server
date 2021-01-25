@@ -42,10 +42,25 @@ INSTALLED_APPS = [
     'accounts', # new2
 ]
 
+AUTHENTICATION_BACKENDS = (                     # oauth2 (III)
+    'oauth2_provider.backends.OAuth2Backend',
+    # Uncomment following if you want to access the admin
+    'django.contrib.auth.backends.ModelBackend'
+)
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',    # oauth2
+    # CorsMiddleware should be placed as high as possible, especially before any
+    # middleware that can generate responses such as Django’s CommonMiddleware
+    # or Whitenoise’s WhiteNoiseMiddleware. If it is not before, it will not be
+    # able to add the CORS headers to these responses. - oauth2 (I)
+    'corsheaders.middleware.CorsMiddleware',    # oauth2 (I)
+    # If you use SessionAuthenticationMiddleware, be sure it appears before
+    # OAuth2TokenMiddleware.  SessionAuthenticationMiddleware is NOT required
+    # for using django-oauth-toolkit. - oauth2 (III)
+    #'django.contrib.auth.middleware.SessionAuthenticationMiddleware', # oauth2 (III)
+    'oauth2_provider.middleware.OAuth2TokenMiddleware', # oauth2 (III)
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

@@ -51,8 +51,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 #    path("o/", include('oauth2_provider.urls', namespace='oauth2_provider')), # oauth2
     path('o/', include((oauth2_endpoint_views, 'oauth'), namespace="oauth2_provider")), # oauth2
-    path('api/hello', ApiEndpoint.as_view()),  # oauth2: an example resource endpoint
+    path('api/hello', ApiEndpoint.as_view()),  # oauth2 (II): an example resource endpoint
     path('accounts/', include('accounts.urls')), # new2
     path('accounts/', include('django.contrib.auth.urls')), # new
+    path('', include('accounts.urls')), # oauth2 (III)
     path('', TemplateView.as_view(template_name='home.html'), name='home'), # new    
 ]
